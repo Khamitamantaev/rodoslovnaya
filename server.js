@@ -20,16 +20,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/models");
 const Role = db.role;
 
-db.sequelize.sync();
-// force: true will drop the table if it already exists
-// db.sequelize.sync({force: true}).then(() => {
-//   console.log('Drop and Resync Database with { force: true }');
-//   initial();
-// });
+
+
+db.sequelize.sync({
+  force : false , // To create table if exists , so make it false
+  alter : true // To update the table if exists , so make it true
+})
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to KhamitApp application." });
 });
 
 // routes
