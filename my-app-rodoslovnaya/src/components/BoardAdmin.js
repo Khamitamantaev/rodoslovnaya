@@ -27,11 +27,7 @@ const BoardAdmin = () => {
     <div className="container">
       <header className="jumbotron">
         <h3>{content}</h3>
-        <div className="flex justify-center ...">
-          <div><button class="bg-green-500 ...">Button1</button></div>
-          <div><button class="bg-green-500 ...">Button2</button></div>
-          <div><button class="bg-green-500 ...">Button3</button></div>
-        </div>
+       
         
       </header>
     </div>
