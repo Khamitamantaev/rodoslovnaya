@@ -28,7 +28,7 @@ const BoardAdmin = () => {
       <header className="jumbotron">
         <h3>{content}</h3>
        
-        
+        <p>class</p>
       </header>
     </div>
   );
