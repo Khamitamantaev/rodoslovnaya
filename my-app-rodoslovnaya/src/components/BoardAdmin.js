@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import UserService from "../services/user-service";
+import Dashboard from "./dashboard/dashboard";
 
 const BoardAdmin = () => {
   const [content, setContent] = useState("");
@@ -24,13 +25,7 @@ const BoardAdmin = () => {
   }, []);
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-       
-        <p>class</p>
-      </header>
-    </div>
+      <Dashboard></Dashboard>
   );
 };
 

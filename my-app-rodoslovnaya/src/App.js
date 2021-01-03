@@ -12,6 +12,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import Modal from "./components/dashboard/Modal"
 
 import { logout } from "./actions/auth";
 import { clearMessage } from "./actions/message";
@@ -44,7 +45,7 @@ const App = () => {
 
   return (
     <Router history={history}>
-      <div>
+      <>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
           <Link to={"/"} className="navbar-brand">
             Rodoslovnaya
@@ -111,7 +112,7 @@ const App = () => {
           )}
         </nav>
 
-        <div className="container mt-3">
+        
           <Switch>
             <Route exact path={["/", "/home"]} component={Home} />
             <Route exact path="/login" component={Login} />
@@ -121,8 +122,7 @@ const App = () => {
             <Route path="/mod" component={BoardModerator} />
             <Route path="/admin" component={BoardAdmin} />
           </Switch>
-        </div>
-      </div>
+        </>
     </Router>
   );
 };
