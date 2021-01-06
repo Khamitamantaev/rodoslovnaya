@@ -2,7 +2,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const path = __dirname + '/app/views/';
 const app = express();
+
+app.use(express.static(path));
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -29,7 +32,7 @@ db.sequelize.sync({
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to KhamitApp application." });
+  res.sendFile(path + "index.html");
 });
 
 // routes
