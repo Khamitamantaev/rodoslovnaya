@@ -8,6 +8,12 @@ module.exports = (sequelize, Sequelize) => {
     },
     friends: {
       type: Sequelize.STRING
+    },
+    positionX: {
+      type: Sequelize.INTEGER
+    },
+    positionY: {
+      type: Sequelize.INTEGER
     }
   });
 

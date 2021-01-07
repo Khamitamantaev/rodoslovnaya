@@ -22,7 +22,8 @@ const Home = () => {
   }, []);
 
   return (
-    <img src="https://w.wallhaven.cc/full/72/wallhaven-7232p9.jpg"></img>
+    <img src="https://w.wallhaven.cc/full/72/wallhaven-7232p9.jpg">
+    </img>
   );
 };
 

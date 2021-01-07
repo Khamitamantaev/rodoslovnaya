@@ -12,11 +12,13 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
+  // Create a Star
   const star = {
     title: req.body.title,
     achievement: req.body.achievement,
-    friends: req.body.friends
+    friends: req.body.friends,
+    positionX: req.body.positionX,
+    positionY: req.body.positionY
   };
 
   // Save Tutorial in the database
