@@ -127,9 +127,9 @@ const BoardUser = () => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Добавить достижение!
-      </Button>
+    <Button variant="success" size="lg" block onClick={handleShow}>
+    Добавить достижение!
+  </Button>
       <Modal show={show} onHide={handleClose} animation={true}>
         <Modal.Header closeButton>
           <Modal.Title>Добавить достижение</Modal.Title>

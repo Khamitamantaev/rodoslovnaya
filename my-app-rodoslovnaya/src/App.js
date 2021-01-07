@@ -46,7 +46,7 @@ const App = () => {
   return (
     <Router history={history}>
       <>
-        <nav className="navbar navbar-expand navbar-dark bg-dark">
+        <nav className="navbar navbar-expand navbar-dark bg-blue-600">
           <Link to={"/"} className="navbar-brand">
             Rodoslovnaya
           </Link>
