@@ -22,11 +22,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container">
-      <header className="jumbotron">
-        <h3>{content}</h3>
-      </header>
-    </div>
+    <img src="https://w.wallhaven.cc/full/72/wallhaven-7232p9.jpg"></img>
   );
 };
 
