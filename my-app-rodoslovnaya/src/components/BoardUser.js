@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import "../index.css"
+import "../index.css";
+import {
+  ModalProvider
+} from 'react-simple-hook-modal';
+import 'react-simple-hook-modal/dist/styles.css';
 
 import { Stage, Layer, Star, Text, Circle } from "react-konva";
 
 import UserService from "../services/user-service";
+import MyComponent from "../components/Modal"
 
 function generateShapes() {
-  return [...Array(30)].map((_, i) => ({
+  return [...Array(20)].map((_, i) => ({
     id: i.toString(),
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -14,8 +19,6 @@ function generateShapes() {
     isDragging: false,
   }));
 }
-
-
 
 const INITIAL_STATE = generateShapes();
 
@@ -35,8 +38,6 @@ const BoardUser = () => {
     );
   };
 
-  
-
   const handleDragEnd = (e) => {
     setStars(
       stars.map((star) => {
@@ -47,7 +48,6 @@ const BoardUser = () => {
       })
     );
   };
-
 
   useEffect(() => {
     UserService.getUserBoard().then(
@@ -69,18 +69,21 @@ const BoardUser = () => {
 
   return (
     <>
-      <Stage width={window.innerWidth} height={window.innerHeight} className="bg-black">
+      <ModalProvider>
+        <MyComponent />
+      </ModalProvider>
+      <Stage width={window.innerWidth} height={4000} className="bg-black">
         <Layer>
           <Text text="Попробуйте перенести Звездочку" />
           {stars.map((star) => (
-            <Star 
+            <Star
               key={star.id}
               id={star.id}
               x={star.x}
               y={star.y}
               numPoints={5}
-              innerRadius={20}
-              outerRadius={40}
+              innerRadius={10}
+              outerRadius={25}
               fill="#FFFFFF"
               opacity={1}
               draggable
