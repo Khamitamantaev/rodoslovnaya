@@ -17,6 +17,7 @@ import {
         isOpen={isModalOpen} q
         transition={ModalTransition.BOTTOM_UP}
       >
+        
         <button onClick={closeModal}>Close</button>
       </Modal>
     </>

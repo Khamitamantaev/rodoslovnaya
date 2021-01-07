@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
-import {
-  ModalProvider
-} from 'react-simple-hook-modal';
-import 'react-simple-hook-modal/dist/styles.css';
+import "react-simple-hook-modal/dist/styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, Button } from "react-bootstrap";
 
 import { Stage, Layer, Star, Text, Circle } from "react-konva";
 
 import UserService from "../services/user-service";
-import MyComponent from "../components/Modal"
+import starService from "../services/star-service";
 
 function generateShapes() {
-  return [...Array(20)].map((_, i) => ({
+  return [...Array(0)].map((_, i) => ({
     id: i.toString(),
     x: Math.random() * window.innerWidth,
     y: Math.random() * window.innerHeight,
@@ -20,11 +19,30 @@ function generateShapes() {
   }));
 }
 
+const initialStarState = {
+  id: null,
+  title: "",
+  achievement: "",
+  friends: "",
+};
+
 const INITIAL_STATE = generateShapes();
 
 const BoardUser = () => {
+  const [star, setStar] = useState(initialStarState);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setStar({ ...star, [name]: value });
+  };
   const [stars, setStars] = useState(INITIAL_STATE);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const handleDragStart = (e) => {
     const id = e.target.id();
@@ -49,8 +67,37 @@ const BoardUser = () => {
     );
   };
 
+  const saveStar = () => {
+    var data = {
+      title: star.title,
+      achievement: star.achievement,
+      friends: star.friends,
+    };
+
+    starService
+      .create(data)
+      .then((response) => {
+        setStar({
+          id: response.data.id,
+          title: response.data.title,
+          achievement: response.data.achievement,
+          friends: response.data.friends,
+        });
+        setSubmitted(!submitted);
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
+  const newStar = () => {
+    setStar(initialStarState);
+    setSubmitted(false);
+  };
+
   useEffect(() => {
-    UserService.getUserBoard().then(
+    starService.getAll().then(
       (response) => {
         setContent(response.data);
       },
@@ -65,17 +112,91 @@ const BoardUser = () => {
         setContent(_content);
       }
     );
-  }, []);
+  }, [submitted]);
 
   return (
     <>
-      <ModalProvider>
-        <MyComponent />
-      </ModalProvider>
+      <Button variant="primary" onClick={handleShow}>
+        Add Star!
+      </Button>
+      <Modal show={show} onHide={handleClose} animation={false}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="submit-form">
+            {submitted ? (
+              <div>
+                <h4>You submitted successfully!</h4>
+                <button className="btn btn-success" onClick={newStar}>
+                  Add
+                </button>
+              </div>
+            ) : (
+              <div>
+                <div className="form-group">
+                  <label htmlFor="title">Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="title"
+                    required
+                    value={star.title}
+                    onChange={handleInputChange}
+                    name="title"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="achievement">Achievement</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="achievement"
+                    required
+                    value={star.achievement}
+                    onChange={handleInputChange}
+                    name="achievement"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="friends">Friends</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="friends"
+                    required
+                    value={star.friends}
+                    onChange={handleInputChange}
+                    name="friends"
+                  />
+                </div>
+
+                <button onClick={saveStar} className="btn btn-success">
+                  Submit
+                </button>
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <ul>
+      {content.map((star) =>
+        <li>{star.title}</li>
+      )}
+    </ul>
       <Stage width={window.innerWidth} height={4000} className="bg-black">
         <Layer>
-          <Text text="Попробуйте перенести Звездочку" />
-          {stars.map((star) => (
+          {content.map((star) => (
             <Star
               key={star.id}
               id={star.id}
