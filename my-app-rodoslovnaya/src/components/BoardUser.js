@@ -30,9 +30,25 @@ const initialStarState = {
   isDragging: false,
 };
 
+const initialCurrentStar = {
+  id: null,
+  title: "Khamit",
+  achievement: "",
+  friends: "",
+  postionX: null,
+  positionY: null,
+  rotation: Math.random() * 180,
+  isDragging: false,
+};
+
 // const INITIAL_STATE = generateShapes();
 
+
+
 const BoardUser = () => {
+  const [currentStar, setCurrentStar] = useState(initialCurrentStar);
+  const [message, setMessage] = useState("");
+
   const [star, setStar] = useState(initialStarState);
   const [submitted, setSubmitted] = useState(false);
 
@@ -40,6 +56,43 @@ const BoardUser = () => {
     const { name, value } = event.target;
     setStar({ ...star, [name]: value });
   };
+
+  function showEditModal(event, i) {
+    const recordToEdit = content.filter((item, index) => {
+      return index === i;
+    })[0];
+
+    setShowUpdate(true);
+
+    setCurrentStar({
+      id: recordToEdit.id,
+      title: recordToEdit.title,
+      achievement: recordToEdit.achievement,
+      friends: recordToEdit.friends,
+      positionX: recordToEdit.positionX,
+      positionY:recordToEdit.positionY,
+      rotation: Math.random() * 180,
+      isDragging: false,
+    });
+  }
+
+  const handleUpdateChange = event => {
+    const { name, value } = event.target;
+    setCurrentStar({ ...currentStar, [name]: value });
+  };
+
+
+  // const getCurrentStar = id => {
+  //   starService.get(currentStar.id)
+  //     .then(response => {
+  //       setCurrentStar(response.data);
+  //       console.log(response.data);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+  // };
+
   // const [stars, setStars] = useState(INITIAL_STATE);
   const [content, setContent] = useState([]);
 
@@ -74,6 +127,8 @@ const BoardUser = () => {
     );
   };
 
+ 
+
   const saveStar = () => {
     var data = {
       title: star.title,
@@ -107,6 +162,28 @@ const BoardUser = () => {
     setSubmitted(false);
   };
 
+  const updateStar = () => {
+    starService.update(currentStar.id, currentStar)
+      .then(response => {
+        console.log(response.data);
+        setMessage("The Star was updated successfully!");
+        setSubmitted(!submitted);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+  const deleteStar = () => {
+    starService.remove(currentStar.id)
+      .then(response => {
+        console.log(response.data);
+        setSubmitted(!submitted);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
   useEffect(() => {
     starService.getAll().then(
       (response) => {
@@ -125,6 +202,9 @@ const BoardUser = () => {
     );
   }, [submitted]);
 
+  
+
+  
   return (
     <>
     <Button variant="success" size="lg" block onClick={handleShow}>
@@ -223,7 +303,7 @@ const BoardUser = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-       <Modal show={showUpdate} onHide={handleCloseUpdate} animation={false}>
+      <Modal show={showUpdate} onHide={handleCloseUpdate} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>Изменить достижение</Modal.Title>
         </Modal.Header>
@@ -233,7 +313,7 @@ const BoardUser = () => {
               <div>
                 <h4>You submitted successfully!</h4>
                 <button className="btn btn-success" onClick={newStar}>
-                  Add
+                  Изменить
                 </button>
               </div>
             ) : (
@@ -245,8 +325,8 @@ const BoardUser = () => {
                     className="form-control"
                     id="title"
                     required
-                    value={star.title}
-                    onChange={handleInputChange}
+                    value={currentStar.title}
+                    onChange={handleUpdateChange}
                     name="title"
                   />
                 </div>
@@ -258,8 +338,8 @@ const BoardUser = () => {
                     className="form-control"
                     id="achievement"
                     required
-                    value={star.achievement}
-                    onChange={handleInputChange}
+                    value={currentStar.achievement}
+                    onChange={handleUpdateChange}
                     name="achievement"
                   />
                 </div>
@@ -271,8 +351,8 @@ const BoardUser = () => {
                     className="form-control"
                     id="friends"
                     required
-                    value={star.friends}
-                    onChange={handleInputChange}
+                    value={currentStar.friends}
+                    onChange={handleUpdateChange}
                     name="friends"
                   />
                 </div>
@@ -284,8 +364,8 @@ const BoardUser = () => {
                     id="positionX"
                     required
                     type="number"
-                    value={star.positionX}
-                    onChange={handleInputChange}
+                    value={currentStar.positionX}
+                    onChange={handleUpdateChange}
                     name="positionX"
                   />
                 </div>
@@ -297,22 +377,22 @@ const BoardUser = () => {
                     id="positionY"
                     required
                     type="number"
-                    value={star.positionY}
-                    onChange={handleInputChange}
+                    value={currentStar.positionY}
+                    onChange={handleUpdateChange}
                     name="positionY"
                   />
                 </div>
 
-                <button onClick={saveStar} className="btn btn-success">
-                  Добавить
+                <button  onClick={updateStar} className="btn btn-success">
+                  Сохранить
                 </button>
               </div>
             )}
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Закрыть
+          <Button variant="danger" onClick={deleteStar}>
+            Удалить
           </Button>
         </Modal.Footer>
       </Modal>
@@ -341,7 +421,7 @@ const BoardUser = () => {
               scaleY={star.isDragging ? 1.2 : 1}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
-              onClick={handleShowUpdate}
+              onClick={(e) => showEditModal(e, index)}
             />
           ))}
         </Layer>
