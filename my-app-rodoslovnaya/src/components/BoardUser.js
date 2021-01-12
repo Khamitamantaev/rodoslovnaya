@@ -397,7 +397,7 @@ const BoardUser = () => {
         </Modal.Footer>
       </Modal>
      
-      <Stage width={window.innerWidth} height={4000} className="bg-black">
+      <Stage width={window.innerWidth} height={4000} className="bg-blue-400">
         <Layer>
           {content.map((star, index) => (
             <Star

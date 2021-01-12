@@ -1,9 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
+import UserService from "../services/user-service";
 import { Redirect } from 'react-router-dom';
 import { useSelector } from "react-redux";
+import Rodoslovnaya from "./dagre-d3-react/exampledagre";
+import Rodoslovnayax from "./dagre-d3-react/exampledagrecopy";
 
 const Profile = () => {
   const { user: currentUser } = useSelector((state) => state.auth);
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    UserService.getAllUsers().then(
+      (response) => {
+        setContent(response.data);
+        console.log(response.data);
+      },
+      (error) => {
+        const _content =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        setContent(_content);
+        
+      }
+    );
+  }, []);
 
   if (!currentUser) {
     return <Redirect to="/login" />;
@@ -11,26 +36,7 @@ const Profile = () => {
 
   return (
     <div className="container">
-      <header className="jumbotron">
-        <h3>
-          <strong>{currentUser.username}</strong> Profile
-        </h3>
-      </header>
-      <p>
-        <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{" "}
-        {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-      </p>
-      <p>
-        <strong>Id:</strong> {currentUser.id}
-      </p>
-      <p>
-        <strong>Email:</strong> {currentUser.email}
-      </p>
-      <strong>Authorities:</strong>
-      <ul>
-        {currentUser.roles &&
-          currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-      </ul>
+      <Rodoslovnayax content={content}/>
     </div>
   );
 };
