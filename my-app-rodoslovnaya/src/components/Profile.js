@@ -35,8 +35,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="container">
-      <Rodoslovnayax content={content}/>
+    <div className="cont">
+      <Rodoslovnaya content={content}/>
     </div>
   );
 };
