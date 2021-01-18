@@ -36,7 +36,7 @@ const Profile = () => {
 
   return (
     <div className="cont">
-      <Rodoslovnaya content={content}/>
+      <Rodoslovnaya content={content} />
     </div>
   );
 };

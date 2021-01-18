@@ -20,7 +20,7 @@ const Rodoslovnaya = (props) => {
         label: content[i].username,
         labelType: "string",
         config: {
-          style: "fill: #afa",
+          style: "fill: #D7D718",
         },
       });
     }
