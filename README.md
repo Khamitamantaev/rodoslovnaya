@@ -1,8 +1,9 @@
-# Node.js – JWT Authentication & Authorization example with JSONWebToken & Sequelize
-
+# Родословная для портфолио 
+# Хамит Амантаев
 ## Project setup
 ```
-npm install
+При помощи React js(front),Node js(backend),JWT Auth, MySQL, Sequelize(ORM).
+yarn start
 ```
 
 ### Run
